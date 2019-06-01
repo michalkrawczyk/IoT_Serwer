@@ -1,0 +1,18 @@
+{% extends 'server/base.html' %}
+
+{% block title %}{{ device.name }} details{% endblock %}
+{% block header %}
+    <h2>Device Details:</h2>
+    <ul>
+    <li>ID: {{ device.id }}</li>
+    <li>Name: {{ device.name }}</li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <li><a href="{% url 'IoT:ErrorLog' device.id %}">Error Log</a> </li>
+
+{% endblock %}

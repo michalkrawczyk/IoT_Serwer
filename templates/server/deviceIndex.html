@@ -1,0 +1,19 @@
+{% extends 'server/base.html' %}
+
+{% block title %}All Devices{% endblock %}
+
+{% block header %}
+<h1>List of Available Devices:</h1>
+{% endblock %}
+
+{% block body %}
+    {% if allDevices %}
+        <ul>
+            {% for device in allDevices %}
+                <li><a href="{% url 'IoT:DeviceDetail' device.id %}">{{ device.id }} - {{ device.name }}</a> </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>No Devices</h3>
+    {% endif %}
+{% endblock %}

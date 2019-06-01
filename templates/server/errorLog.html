@@ -1,0 +1,20 @@
+{% extends 'server/base.html' %}
+
+{% block title %}Error List{% endblock %}
+
+{% block header %}
+    <h1>List of Errors:</h1>
+    <h2>For device with ID: {{ dev.pk }}</h2>
+{% endblock %}
+
+{% block body %}
+    {% if errorList %}
+        <ul>
+            {% for error in errorList %}
+                <li>{{ error.date }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>No Errors Found for this Device</h3>
+    {% endif %}
+{% endblock %}
