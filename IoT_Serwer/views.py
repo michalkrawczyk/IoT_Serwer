@@ -3,6 +3,10 @@ from django.shortcuts import get_object_or_404
 from .models import Device, Sensor, ErrorData
 
 from .models import Color
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ColorSerializer,SensorSerializer
 
 
 class DeviceIndexView(generic.ListView):
@@ -38,11 +42,46 @@ class ErrorLog(generic.ListView):
 #     template_name = 'server/sensorLog.html'
 
 
+class ColorList(APIView):
+    def get(self , request):
+        colors = Color.objects.all()
+        serializer = ColorSerializer(colors, many=True)
+        return Response(serializer.data)
+
+    def post(self):
+        pass
 
 
+class ColorDetail(APIView):
+    def get_object(self, pk):
+        return get_object_or_404(Color, pk=pk)
+
+    def get(self, request, pk):
+        snippet = self.get_object(pk)
+        serializer = ColorSerializer(snippet)
+        return Response(serializer.data)
 
 
+# SensorList?
 
+class SensorDetail(APIView):
+    def get_object(self, pk):
+        return get_object_or_404(Sensor, pk=pk)
 
-''' Robic tez CreateView? '''
+    def get(self, request, pk):
+        snippet = self.get_object(pk)
+        serializer = ColorSerializer(snippet)
+        return Response(serializer.data)
 
+    def put(self, request, pk):
+        snippet = self.get_object(pk)
+        serializer = SensorSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
