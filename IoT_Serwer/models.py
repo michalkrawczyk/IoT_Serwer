@@ -24,11 +24,11 @@ class CustomModels:
 
     @staticmethod
     def temperature_field():
-        return models.IntegerField(
-            default=20,
+        return models.FloatField(
+            default=20.0,
             validators=[
-                MinValueValidator(0),
-                MaxValueValidator(100)
+                MinValueValidator(0.0),
+                MaxValueValidator(100.0)
             ]
         )
 
