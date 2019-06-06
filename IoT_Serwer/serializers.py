@@ -18,4 +18,4 @@ class SensorSerializer(serializers.ModelSerializer):
 class CurrentStateDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = CurrentStateData
-        fields = ('id', 'red', 'green', 'blue', 'temperature', 'shutterState', 'manualControl')
+        fields = ('id', 'red', 'green', 'blue', 'temperature', 'shutterPosition', 'manualControl')

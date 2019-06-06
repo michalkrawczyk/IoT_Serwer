@@ -1,13 +1,5 @@
-from enum import Enum
-
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-
-
-class ShutterState(Enum):
-    DOWN = 1
-    UP = 0
-    ERROR = 2
 
 
 class CustomModels:
@@ -33,12 +25,12 @@ class CustomModels:
         )
 
     @staticmethod
-    def shutter_state():
+    def shutter_position():
         return models.IntegerField(
-            default=2,
+            default=0,
             validators=[
                 MinValueValidator(0),
-                MaxValueValidator(2)
+                MaxValueValidator(100)
             ]
         )
 
@@ -110,5 +102,5 @@ class CurrentStateData(models.Model):
     green = CustomModels.color_field()
     blue = CustomModels.color_field()
     temperature = CustomModels.temperature_field()
-    shutterState = CustomModels.shutter_state()
+    shutterPosition = CustomModels.shutter_position()
     manualControl = models.BooleanField(default=False)
