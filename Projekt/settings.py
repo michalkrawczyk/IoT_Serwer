@@ -25,7 +25,7 @@ SECRET_KEY = '_zawh7hsp@)=w14ikgfxl7@cac=uc+ee7y946ix^9onxz1+7wg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.234']
 
 
 # Application definition
@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'IoT_Serwer.middleware.StartupMiddleware',
 ]
 
 ROOT_URLCONF = 'Projekt.urls'
