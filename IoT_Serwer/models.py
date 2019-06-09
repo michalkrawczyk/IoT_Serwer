@@ -2,6 +2,39 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
+class CustomModels:
+
+    @staticmethod
+    def color_field():
+        return models.IntegerField(
+            default=0,
+            validators=[
+                MinValueValidator(0),
+                MaxValueValidator(255)
+            ]
+        )
+
+    @staticmethod
+    def temperature_field():
+        return models.FloatField(
+            default=20.0,
+            validators=[
+                MinValueValidator(0.0),
+                MaxValueValidator(100.0)
+            ]
+        )
+
+    @staticmethod
+    def shutter_position():
+        return models.IntegerField(
+            default=0,
+            validators=[
+                MinValueValidator(0),
+                MaxValueValidator(100)
+            ]
+        )
+
+
 class Device(models.Model):
     group = models.IntegerField(
         default=0,
@@ -62,3 +95,12 @@ class Color(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class CurrentStateData(models.Model):
+    red = CustomModels.color_field()
+    green = CustomModels.color_field()
+    blue = CustomModels.color_field()
+    temperature = CustomModels.temperature_field()
+    shutterPosition = CustomModels.shutter_position()
+    manualControl = models.BooleanField(default=False)

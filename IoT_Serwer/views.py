@@ -1,12 +1,12 @@
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import Device, Sensor, ErrorData
+from .models import Device, Sensor, ErrorData, CurrentStateData
 
 from .models import Color
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ColorSerializer,SensorSerializer
+from .serializers import ColorSerializer, SensorSerializer, CurrentStateDataSerializer
 
 
 class DeviceIndexView(generic.ListView):
@@ -27,14 +27,16 @@ class ErrorLog(generic.ListView):
     context_object_name = 'errorList'
 
     def get_queryset(self):
-            dev = get_object_or_404(Device, pk=self.kwargs['device'])
-            return ErrorData.objects.filter(deviceID=dev.pk)
+        dev = get_object_or_404(Device, pk=self.kwargs['device'])
+        return ErrorData.objects.filter(deviceID=dev.pk)
 
     def get_context_data(self, **kwargs):
         dev = get_object_or_404(Device, pk=self.kwargs['device'])
         context = super().get_context_data(**kwargs)
         context['dev'] = dev
         return context
+
+
 #
 #
 # class SensorLog(generic.DetailView):
@@ -43,7 +45,7 @@ class ErrorLog(generic.ListView):
 
 
 class ColorList(APIView):
-    def get(self , request):
+    def get(self, request):
         colors = Color.objects.all()
         serializer = ColorSerializer(colors, many=True)
         return Response(serializer.data)
@@ -85,3 +87,18 @@ class SensorDetail(APIView):
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CurrentDataDetails(APIView):
+    def get(self, request):
+        state_data = get_object_or_404(CurrentStateData, pk=1)
+        serializer = CurrentStateDataSerializer(state_data)
+        return Response(serializer.data)
+
+    def post(self, request):
+        state_data = get_object_or_404(CurrentStateData, pk=1)
+        serializer = CurrentStateDataSerializer(state_data, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
